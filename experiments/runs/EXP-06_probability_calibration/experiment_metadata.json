@@ -1,0 +1,18 @@
+{
+  "experiment": "EXP-06",
+  "base_experiment": "EXP-01",
+  "dataset_version": "strategy_a_v1",
+  "calibration_method": "sigmoid",
+  "fold_strategy": "StratifiedGroupKFold",
+  "grouping_column": "asin",
+  "folds": 3,
+  "random_seed": 42,
+  "ensemble": true,
+  "evaluation_partition": "validation",
+  "classification_threshold": 0.6,
+  "probability_metrics": [
+    "brier_score",
+    "log_loss"
+  ],
+  "test_dataset_accessed": false
+}
