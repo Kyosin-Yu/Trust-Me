@@ -89,6 +89,23 @@ This is a provisional selection, not a final model deployment decision.
 - **Result:** Macro-F1 = 0.6641
 - **Finding:** The initial Linear SVM configuration did not outperform EXP-03.
 
+### EXP-05 — Validation Error Analysis
+
+- **Objective:** Investigate classification disagreements from the selected EXP-03 baseline and identify potential model limitations.
+- **Implementation:** `ml/analyze_validation_errors.py`
+- **Base configuration:** `experiments/runs/EXP-01_logistic_regression/review_baseline_config.json`
+- **Decision threshold:** 0.60 (selected in EXP-03)
+- **Dataset:** `strategy_a_v1` — validation partition (9,938 reviews)
+- **Accuracy:** 0.8043
+- **Macro-F1:** 0.7049
+- **False Positives:** 1,028
+- **False Negatives:** 917
+- **Total Disagreements:** 1,945
+- **Key Findings:** Short reviews exhibited higher disagreement rates, while the 0.40–0.60 fake-score interval recorded the highest score-group disagreement rate (55.04%).
+- **Conclusion:** The analysis identified limitations of text-only review classification. Results represent disagreements with research-derived candidate labels, not independently verified authenticity errors.
+- **Status:** Quantitative analysis completed; qualitative review inspection pending.
+- **Experiment Folder:** `experiments/runs/EXP-05_error_analysis/`
+
 ## 5. Experiment Status
 
 | Experiment | Status |
@@ -98,7 +115,7 @@ This is a provisional selection, not a final model deployment decision.
 | EXP-02 | Completed |
 | EXP-03 | Completed |
 | EXP-04 | Completed |
-| EXP-05 — Validation Error Analysis | Planned |
+| EXP-05 — Validation Error Analysis | Quantitative Complete; Qualitative Pending |
 
 ## 6. Experimental Controls and Limitations
 

@@ -1,0 +1,16 @@
+{
+  "experiment": "EXP-05",
+  "base_experiment": "EXP-01",
+  "threshold_source": "EXP-03",
+  "dataset_version": "strategy_a_v1",
+  "evaluation_partition": "validation",
+  "threshold": 0.6,
+  "validation_reviews": 9938,
+  "accuracy": 0.8042865767760112,
+  "macro_f1": 0.7049195293437327,
+  "true_negative": 1113,
+  "false_positive": 1028,
+  "false_negative": 917,
+  "true_positive": 6880,
+  "total_disagreements": 1945
+}

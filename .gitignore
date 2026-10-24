@@ -42,3 +42,6 @@ Thumbs.db
 # Local ML datasets
 /dataset/raw/
 /dataset/processed/
+
+# EXP-05: Keep qualitative review samples private and local
+/experiments/runs/EXP-05_error_analysis/error_samples_private.csv
