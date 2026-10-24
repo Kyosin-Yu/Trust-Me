@@ -20,7 +20,7 @@ def main():
 
     predictions = model.predict(X_val)
 
-    print("=== MAJORITY-CLASS BASELINE ===")
+    print("=== EXP-00: MAJORITY-CLASS BASELINE ===")
     print(f"Training majority class: {model.classes_[model.class_prior_.argmax()]}")
 
     print(
