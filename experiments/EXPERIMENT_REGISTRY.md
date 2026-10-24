@@ -106,6 +106,23 @@ This is a provisional selection, not a final model deployment decision.
 - **Status:** Quantitative analysis completed; qualitative review inspection pending.
 - **Experiment Folder:** `experiments/runs/EXP-05_error_analysis/`
 
+### EXP-06 — Probability Calibration
+
+- **Objective:** Evaluate whether sigmoid calibration improves the probability quality of the existing TF-IDF and Logistic Regression baseline.
+- **Implementation:** `ml/evaluate_probability_calibration.py`
+- **Base Configuration:** `experiments/runs/EXP-01_logistic_regression/review_baseline_config.json`
+- **Calibration Method:** Sigmoid
+- **Cross-Validation:** 3-fold StratifiedGroupKFold, grouped by `asin`
+- **Dataset:** `strategy_a_v1` — 46,564 training and 9,938 validation reviews
+- **Brier Score:** 0.133251 → 0.131561
+- **Log Loss:** 0.425433 → 0.421229
+- **ECE (10 bins):** 0.037274 → 0.028313
+- **Accuracy:** 0.804287 → 0.813946
+- **Macro-F1:** 0.704920 → 0.705708
+- **Conclusion:** Sigmoid calibration modestly improved validation probability quality, although some reliability intervals deteriorated.
+- **Status:** Completed
+- **Experiment Folder:** `experiments/runs/EXP-06_probability_calibration/`
+
 ## 5. Experiment Status
 
 | Experiment | Status |
