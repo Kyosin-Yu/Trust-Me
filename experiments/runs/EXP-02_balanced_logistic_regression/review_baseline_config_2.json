@@ -1,0 +1,41 @@
+{
+  "experiment_id": "review_tfidf_lr_balanced_v1",
+  "dataset_version": "strategy_a_v1",
+  "random_seed": 42,
+  "input_column": "review_text",
+  "target_column": "label",
+  "labels": {
+    "0": "candidate_genuine",
+    "1": "candidate_fake"
+  },
+  "tfidf": {
+    "ngram_range": [1, 2],
+    "max_features": 20000,
+    "min_df": 2,
+    "lowercase": true,
+    "sublinear_tf": false,
+    "norm": "l2"
+  },
+  "logistic_regression": {
+    "C": 1.0,
+    "class_weight": "balanced",
+    "max_iter": 1000,
+    "random_state": 42
+  },
+  "evaluation": {
+    "primary_metric": "macro_f1",
+    "secondary_metrics": [
+      "precision",
+      "recall",
+      "per_class_f1",
+      "confusion_matrix",
+      "average_precision"
+    ],
+    "use_test_for_model_selection": false
+  },
+  "limitations": [
+    "Training labels are research-derived candidate labels.",
+    "Reviewer overlap remains across dataset partitions.",
+    "The baseline predicts candidate labels, not verified fraud."
+  ]
+}
