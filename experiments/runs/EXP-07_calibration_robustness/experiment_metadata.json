@@ -1,0 +1,19 @@
+{
+  "experiment": "EXP-07",
+  "base_experiment": "EXP-01",
+  "calibration_reference": "EXP-06",
+  "dataset_version": "strategy_a_v1",
+  "seeds": [
+    42,
+    123,
+    2026
+  ],
+  "folds": 3,
+  "grouping_variable": "asin",
+  "calibration_method": "sigmoid",
+  "ensemble": true,
+  "comparison_threshold": 0.6,
+  "evaluation_partition": "validation",
+  "ece_bins": 10,
+  "test_dataset_accessed": false
+}
