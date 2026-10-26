@@ -1,0 +1,25 @@
+{
+  "dataset_version": "strategy_a_v1",
+  "original_deduplication": "exact_stripped_text",
+  "casefolded_overlap_policy": "document_and_retain_original_dataset",
+  "test_records_modified": false,
+  "partition_comparisons": [
+    {
+      "partition_pair": "train/test",
+      "product_overlap": 0,
+      "review_id_overlap": 0,
+      "exact_stripped_text_overlap": 0,
+      "casefolded_unique_text_overlap": 9,
+      "affected_test_rows": 9
+    },
+    {
+      "partition_pair": "validation/test",
+      "product_overlap": 0,
+      "review_id_overlap": 0,
+      "exact_stripped_text_overlap": 0,
+      "casefolded_unique_text_overlap": 4,
+      "affected_test_rows": 4
+    }
+  ],
+  "limitation": "Case-insensitive duplicate review texts remain across product-disjoint partitions. TF-IDF lowercase preprocessing may make these texts equivalent model inputs."
+}
