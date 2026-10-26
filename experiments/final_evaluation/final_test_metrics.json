@@ -1,0 +1,31 @@
+{
+  "experiment": "final_held_out_test_v1",
+  "selection_id": "review_model_selection_v1",
+  "dataset_version": "strategy_a_v1",
+  "partition": "test",
+  "test_reviews": 9926,
+  "threshold": 0.65,
+  "accuracy": 0.7859157767479347,
+  "macro_f1": 0.6929862769367052,
+  "candidate_genuine_precision": 0.5027932960893855,
+  "candidate_genuine_recall": 0.5472404115996258,
+  "candidate_genuine_f1": 0.5240761478163494,
+  "candidate_fake_precision": 0.8726148177391763,
+  "candidate_fake_recall": 0.8514381099126862,
+  "candidate_fake_f1": 0.8618964060570612,
+  "brier_score": 0.1346608888184228,
+  "log_loss": 0.4298599455978603,
+  "ece_10_bins": 0.03394476771467348,
+  "confusion_matrix": [
+    [
+      1170,
+      968
+    ],
+    [
+      1157,
+      6631
+    ]
+  ],
+  "test_based_tuning_performed": false,
+  "label_interpretation": "research_derived_candidate_labels"
+}

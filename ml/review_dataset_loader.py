@@ -34,13 +34,19 @@ def load_config(config_path=None):
 
     return config
 
-def load_partition(name, config):
+def load_partition(name, config, *, allow_test=False):
     """Load and validate one ML dataset partition."""
 
-    if name not in ("train", "validation"):
+    allowed_partitions = {"train", "validation"}
+
+    if allow_test:
+        allowed_partitions.add("test")
+
+    if name not in allowed_partitions:
         raise ValueError(
-            "Only train and validation are allowed "
-            "during baseline development."
+            f"Partition '{name}' is not permitted. "
+            "Test access must be explicitly enabled "
+            "for final evaluation."
         )
 
     dataset_dir = (
