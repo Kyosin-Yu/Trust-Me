@@ -48,12 +48,14 @@ This is a provisional selection, not a final model deployment decision.
 
 ## 4. Individual Experiment Records
 
+
 ### EXP-00 — Majority-Class Baseline
 
 - **Script:** `ml/evaluate_majority_baseline.py`
 - **Method:** scikit-learn `DummyClassifier(strategy="most_frequent")`
 - **Result:** Macro-F1 = 0.4396
 - **Finding:** Always predicts candidate fake and cannot identify candidate-genuine reviews.
+
 
 ### EXP-01 — Standard Logistic Regression
 
@@ -63,6 +65,7 @@ This is a provisional selection, not a final model deployment decision.
 - **Result:** Macro-F1 = 0.6800
 - **Finding:** High candidate-fake recall but limited candidate-genuine recall.
 
+
 ### EXP-02 — Balanced Logistic Regression
 
 - **Script:** `ml/train_baseline.py`
@@ -70,6 +73,7 @@ This is a provisional selection, not a final model deployment decision.
 - **Model:** TF-IDF + Logistic Regression, `class_weight="balanced"`, threshold 0.50
 - **Result:** Macro-F1 = 0.6532
 - **Finding:** Candidate-genuine recall increased, but overall Macro-F1 declined compared with EXP-01.
+
 
 ### EXP-03 — Decision Threshold Analysis
 
@@ -89,6 +93,7 @@ This is a provisional selection, not a final model deployment decision.
 - **Result:** Macro-F1 = 0.6641
 - **Finding:** The initial Linear SVM configuration did not outperform EXP-03.
 
+
 ### EXP-05 — Validation Error Analysis
 
 - **Objective:** Investigate classification disagreements from the selected EXP-03 baseline and identify potential model limitations.
@@ -106,6 +111,7 @@ This is a provisional selection, not a final model deployment decision.
 - **Status:** Completed — quantitative analysis, exploratory qualitative inspection, and excerpt-truncation verification.
 - **Experiment Folder:** `experiments/runs/EXP-05_error_analysis/`
 
+
 ### EXP-06 — Probability Calibration
 
 - **Objective:** Evaluate whether sigmoid calibration improves the probability quality of the existing TF-IDF and Logistic Regression baseline.
@@ -122,6 +128,7 @@ This is a provisional selection, not a final model deployment decision.
 - **Conclusion:** Sigmoid calibration modestly improved validation probability quality, although some reliability intervals deteriorated.
 - **Status:** Completed
 - **Experiment Folder:** `experiments/runs/EXP-06_probability_calibration/`
+
 
 ### EXP-07 — Calibration Robustness Evaluation
 
@@ -142,6 +149,26 @@ This is a provisional selection, not a final model deployment decision.
 - **Conclusion:** Sigmoid calibration showed modest improvements in probability quality under the tested fold assignments, without consistent classification gains.
 - **Status:** Completed
 - **Experiment Folder:** `experiments/runs/EXP-07_calibration_robustness/`
+
+
+### EXP-08 — Calibrated Classification Threshold Evaluation
+
+- **Objective:** Evaluate classification thresholds for the sigmoid-calibrated Logistic Regression model.
+- **Implementation:** `ml/evaluate_calibrated_thresholds.py`
+- **Base Configuration:** `experiments/runs/EXP-01_logistic_regression/review_baseline_config.json`
+- **Calibration Reference:** EXP-06
+- **Calibration Method:** Sigmoid, seed 42, 3 product-grouped folds
+- **Dataset:** `strategy_a_v1` — 46,564 training and 9,938 validation reviews
+- **Threshold Range:** 0.30–0.80, increments of 0.05
+- **Best Tested Threshold:** 0.65
+- **Validation Accuracy:** 0.797344
+- **Validation Macro-F1:** 0.707114
+- **Candidate Genuine Recall:** 0.562354
+- **Candidate Fake Recall:** 0.861870
+- **Key Finding:** Threshold 0.65 marginally improved Macro-F1 over calibrated threshold 0.60 while increasing candidate-genuine recall and reducing candidate-fake recall.
+- **Conclusion:** Threshold 0.65 is provisionally selected under the predefined validation Macro-F1 criterion. Final selection and test evaluation remain pending.
+- **Status:** Completed
+- **Experiment Folder:** `experiments/runs/EXP-08_calibrated_threshold/`
 
 ## 5. Experiment Status
 

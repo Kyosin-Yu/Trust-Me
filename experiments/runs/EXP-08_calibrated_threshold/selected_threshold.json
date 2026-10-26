@@ -1,0 +1,11 @@
+{
+  "experiment": "EXP-08",
+  "selection_status": "provisional_validation_selection",
+  "threshold": 0.65,
+  "validation_macro_f1": 0.7071138653591345,
+  "validation_accuracy": 0.7973435298852888,
+  "genuine_recall": 0.5623540401681457,
+  "fake_recall": 0.8618699499807618,
+  "calibration_seed": 42,
+  "test_dataset_accessed": false
+}
