@@ -1,0 +1,51 @@
+{
+  "selection_id": "review_model_selection_v1",
+  "selection_date": "2026-10-26",
+  "selection_status": "frozen_before_test_evaluation",
+  "dataset_version": "strategy_a_v1",
+  "base_experiment": "EXP-01",
+  "calibration_experiment": "EXP-06",
+  "robustness_experiment": "EXP-07",
+  "threshold_experiment": "EXP-08",
+  "model": {
+    "feature_extractor": "TfidfVectorizer",
+    "ngram_range": [1, 2],
+    "max_features": 20000,
+    "min_df": 2,
+    "lowercase": true,
+    "sublinear_tf": false,
+    "norm": "l2",
+    "classifier": "LogisticRegression",
+    "C": 1.0,
+    "class_weight": null,
+    "max_iter": 1000,
+    "random_state": 42
+  },
+  "calibration": {
+    "method": "sigmoid",
+    "cv_strategy": "StratifiedGroupKFold",
+    "n_splits": 3,
+    "shuffle": true,
+    "random_state": 42,
+    "group_column": "asin",
+    "ensemble": true
+  },
+  "classification": {
+    "positive_class": 1,
+    "negative_class": 0,
+    "threshold": 0.65,
+    "selection_metric": "validation_macro_f1",
+    "selection_rule": "highest_macro_f1_tie_lower_threshold"
+  },
+  "validation_results": {
+    "accuracy": 0.797344,
+    "macro_f1": 0.707114,
+    "candidate_genuine_recall": 0.562354,
+    "candidate_fake_recall": 0.861870
+  },
+  "evaluation_policy": {
+    "test_dataset_accessed_during_selection": false,
+    "allow_test_based_tuning": false,
+    "label_interpretation": "research_derived_candidate_labels"
+  }
+}
