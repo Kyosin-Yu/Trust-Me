@@ -1,0 +1,27 @@
+{
+  "model_version": "review_classifier_v1",
+  "selection_id": "review_model_selection_v1",
+  "dataset_version": "strategy_a_v1",
+  "base_experiment": "EXP-01",
+  "calibration_experiment": "EXP-06",
+  "threshold_experiment": "EXP-08",
+  "training_reviews": 46564,
+  "artifact_filename": "review_classifier_v1.joblib",
+  "artifact_sha256": "6d4bf291ddcbbc8b460890696965ed99cd831b1835af9ae042d9fa7dedd7b7b9",
+  "classes": [
+    0,
+    1
+  ],
+  "positive_class": 1,
+  "classification_threshold": 0.65,
+  "calibration_method": "sigmoid",
+  "calibration_seed": 42,
+  "calibration_folds": 3,
+  "calibration_ensemble": true,
+  "sklearn_version": "1.9.1",
+  "python_version": "3.12.10",
+  "exported_at_utc": "2026-10-27T13:26:42.042310+00:00",
+  "training_partition": "train",
+  "validation_test_accessed": false,
+  "label_interpretation": "research_derived_candidate_labels"
+}
