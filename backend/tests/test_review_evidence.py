@@ -3,6 +3,11 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 from app.contracts.review_evidence import ReviewEvidence
+from app.contracts.review_evidence import (
+    AnalysisCapability,
+    CapabilityStatus,
+    ReviewEvidence,
+)
 
 def valid_evidence():
     """Generate valid sample evidence for testing."""
@@ -128,3 +133,173 @@ def test_invalid_evidence_method():
 
     with pytest.raises(ValidationError):
         ReviewEvidence.model_validate(data)
+
+def test_partial_analysis_with_full_review_coverage():
+    from datetime import datetime, timezone
+    from uuid import uuid4
+
+    evidence = ReviewEvidence(
+        schema_version="1.0",
+        analysis_id=uuid4(),
+        product_id="TEST-PRODUCT",
+        status="partial",
+        capability_status={
+            AnalysisCapability.REVIEW_CLASSIFICATION:
+                CapabilityStatus.COMPLETED,
+            AnalysisCapability.SENTIMENT_ANALYSIS:
+                CapabilityStatus.NOT_PERFORMED,
+            AnalysisCapability.DUPLICATE_DETECTION:
+                CapabilityStatus.NOT_PERFORMED,
+        },
+        total_reviews=10,
+        analyzed_reviews=10,
+        positive_count=None,
+        neutral_count=None,
+        negative_count=None,
+        suspicious_review_count=3,
+        duplicate_review_count=None,
+        findings=[],
+        model_version="review_classifier_v1",
+        analyzed_at=datetime.now(timezone.utc),
+        errors=[],
+    )
+
+    assert evidence.status.value == "partial"
+    assert evidence.analyzed_reviews == evidence.total_reviews
+
+    assert evidence.capability_status[
+        AnalysisCapability.REVIEW_CLASSIFICATION
+    ] == CapabilityStatus.COMPLETED
+
+    assert evidence.capability_status[
+        AnalysisCapability.SENTIMENT_ANALYSIS
+    ] == CapabilityStatus.NOT_PERFORMED
+
+    assert evidence.capability_status[
+        AnalysisCapability.DUPLICATE_DETECTION
+    ] == CapabilityStatus.NOT_PERFORMED
+
+
+@pytest.mark.parametrize(
+    "overrides, expected_error",
+    [
+        (
+            {"positive_count": 0},
+            "Unperformed sentiment analysis requires null counts",
+        ),
+        (
+            {"duplicate_review_count": 0},
+            "Unperformed duplicate detection requires null count",
+        ),
+        (
+            {
+                "suspicious_review_count": 0,
+                "capability_status": {
+                    "review_classification": "not_performed",
+                    "sentiment_analysis": "not_performed",
+                    "duplicate_detection": "not_performed",
+                },
+            },
+            "Unperformed classification requires null count",
+        ),
+    ],
+)
+def test_unperformed_capability_rejects_numeric_counts(
+    overrides,
+    expected_error,
+):
+    from datetime import datetime, timezone
+    from uuid import uuid4
+
+    base_data = {
+        "schema_version": "1.0",
+        "analysis_id": uuid4(),
+        "product_id": "TEST-PRODUCT",
+        "status": "partial",
+        "capability_status": {
+            "review_classification": "completed",
+            "sentiment_analysis": "not_performed",
+            "duplicate_detection": "not_performed",
+        },
+        "total_reviews": 10,
+        "analyzed_reviews": 10,
+        "positive_count": None,
+        "neutral_count": None,
+        "negative_count": None,
+        "suspicious_review_count": 3,
+        "duplicate_review_count": None,
+        "findings": [],
+        "model_version": "review_classifier_v1",
+        "analyzed_at": datetime.now(timezone.utc),
+        "errors": [],
+    }
+
+    base_data.update(overrides)
+
+    with pytest.raises(ValueError, match=expected_error):
+        ReviewEvidence(**base_data)
+
+
+@pytest.mark.parametrize(
+    "overrides, expected_error",
+    [
+        (
+            {"suspicious_review_count": None},
+            "Completed capability requires numeric counts",
+        ),
+        (
+            {
+                "capability_status": {
+                    "review_classification": "completed",
+                    "sentiment_analysis": "failed",
+                    "duplicate_detection": "not_performed",
+                },
+                "positive_count": 0,
+            },
+            "Incomplete capability requires null counts",
+        ),
+        (
+            {
+                "capability_status": {
+                    "review_classification": "completed",
+                    "sentiment_analysis": "not_performed",
+                },
+            },
+            "Capability status must specify all analysis capabilities",
+        ),
+    ],
+)
+def test_capability_integrity_rejects_inconsistent_evidence(
+    overrides,
+    expected_error,
+):
+    from datetime import datetime, timezone
+    from uuid import uuid4
+
+    base_data = {
+        "schema_version": "1.0",
+        "analysis_id": uuid4(),
+        "product_id": "TEST-PRODUCT",
+        "status": "partial",
+        "capability_status": {
+            "review_classification": "completed",
+            "sentiment_analysis": "not_performed",
+            "duplicate_detection": "not_performed",
+        },
+        "total_reviews": 10,
+        "analyzed_reviews": 10,
+        "positive_count": None,
+        "neutral_count": None,
+        "negative_count": None,
+        "suspicious_review_count": 3,
+        "duplicate_review_count": None,
+        "findings": [],
+        "model_version": "review_classifier_v1",
+        "analyzed_at": datetime.now(timezone.utc),
+        "errors": [],
+    }
+
+    base_data.update(overrides)
+
+    with pytest.raises(ValueError, match=expected_error):
+        ReviewEvidence(**base_data)
